@@ -7,6 +7,8 @@ const contactForm = document.getElementById('contact-form');
 const dialog = document.getElementById('project-dialog');
 const dialogContent = document.getElementById('dialog-content');
 const dialogClose = document.getElementById('dialog-close');
+const hero = document.getElementById('inicio');
+const networkCanvas = document.getElementById('hero-network');
 
 const savedTheme = localStorage.getItem('portfolio-theme');
 if (savedTheme === 'light' || savedTheme === 'dark') root.dataset.theme = savedTheme;
@@ -30,6 +32,96 @@ document.querySelectorAll('.nav a').forEach((link) => {
 });
 
 if (year) year.textContent = new Date().getFullYear();
+
+if (hero && networkCanvas) {
+  const context = networkCanvas.getContext('2d');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let nodes = [];
+  let width = 0;
+  let height = 0;
+  let frameId = 0;
+
+  const makeNodes = () => {
+    const count = Math.max(22, Math.min(48, Math.round(width / 28)));
+    nodes = Array.from({ length: count }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.22,
+      vy: (Math.random() - 0.5) * 0.22,
+      radius: Math.random() * 1.15 + 1
+    }));
+  };
+
+  const drawNetwork = () => {
+    context.clearRect(0, 0, width, height);
+    const connectionDistance = Math.min(145, width * 0.18);
+
+    for (let index = 0; index < nodes.length; index += 1) {
+      const node = nodes[index];
+
+      for (let nextIndex = index + 1; nextIndex < nodes.length; nextIndex += 1) {
+        const nextNode = nodes[nextIndex];
+        const distance = Math.hypot(node.x - nextNode.x, node.y - nextNode.y);
+
+        if (distance < connectionDistance) {
+          const opacity = (1 - distance / connectionDistance) * 0.24;
+          context.beginPath();
+          context.moveTo(node.x, node.y);
+          context.lineTo(nextNode.x, nextNode.y);
+          context.strokeStyle = `rgba(14, 165, 233, ${opacity})`;
+          context.lineWidth = 0.8;
+          context.stroke();
+        }
+      }
+
+      context.beginPath();
+      context.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+      context.fillStyle = 'rgba(6, 182, 212, 0.58)';
+      context.fill();
+    }
+  };
+
+  const animateNetwork = () => {
+    nodes.forEach((node) => {
+      node.x += node.vx;
+      node.y += node.vy;
+
+      if (node.x < -8) node.x = width + 8;
+      if (node.x > width + 8) node.x = -8;
+      if (node.y < -8) node.y = height + 8;
+      if (node.y > height + 8) node.y = -8;
+    });
+
+    drawNetwork();
+    frameId = window.requestAnimationFrame(animateNetwork);
+  };
+
+  const updateAnimation = () => {
+    window.cancelAnimationFrame(frameId);
+    drawNetwork();
+
+    if (!reduceMotion.matches && !document.hidden) {
+      frameId = window.requestAnimationFrame(animateNetwork);
+    }
+  };
+
+  const resizeNetwork = () => {
+    const bounds = hero.getBoundingClientRect();
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    width = Math.max(1, Math.round(bounds.width));
+    height = Math.max(1, Math.round(bounds.height));
+    networkCanvas.width = Math.round(width * pixelRatio);
+    networkCanvas.height = Math.round(height * pixelRatio);
+    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    makeNodes();
+    updateAnimation();
+  };
+
+  const resizeObserver = new ResizeObserver(resizeNetwork);
+  resizeObserver.observe(hero);
+  reduceMotion.addEventListener('change', updateAnimation);
+  document.addEventListener('visibilitychange', updateAnimation);
+}
 
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
