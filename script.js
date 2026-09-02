@@ -64,7 +64,7 @@ if (hero && networkCanvas) {
         const distance = Math.hypot(node.x - nextNode.x, node.y - nextNode.y);
 
         if (distance < connectionDistance) {
-          const opacity = (1 - distance / connectionDistance) * 0.24;
+          const opacity = (1 - distance / connectionDistance) * 0.34;
           context.beginPath();
           context.moveTo(node.x, node.y);
           context.lineTo(nextNode.x, nextNode.y);
@@ -76,7 +76,7 @@ if (hero && networkCanvas) {
 
       context.beginPath();
       context.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-      context.fillStyle = 'rgba(6, 182, 212, 0.58)';
+      context.fillStyle = 'rgba(6, 182, 212, 0.78)';
       context.fill();
     }
   };
