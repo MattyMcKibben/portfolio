@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f4c5c"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="vir" x1="0" x2="1">
+      <stop offset="0" stop-color="#440154"/><stop offset=".33" stop-color="#31688e"/><stop offset=".66" stop-color="#35b779"/><stop offset="1" stop-color="#fde725"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <g opacity=".18" stroke="#9be7f2" stroke-width="2">
+    <path d="M40 90h880M40 180h880M40 270h880M40 360h880M40 450h880"/>
+    <path d="M120 40v460M240 40v460M360 40v460M480 40v460M600 40v460M720 40v460M840 40v460"/>
+  </g>
+  <rect x="110" y="70" width="240" height="400" rx="34" fill="#0b1220" stroke="#17b7d4" stroke-width="8"/>
+  <rect x="136" y="118" width="188" height="270" rx="20" fill="#1e293b"/>
+  <path d="M167 300c35-80 70-45 100-110 18 40 39 52 56 22" fill="none" stroke="url(#vir)" stroke-width="13" stroke-linecap="round"/>
+  <circle cx="230" cy="425" r="18" fill="#334155"/>
+  <g transform="translate(500 110)">
+    <path d="M0 95c0-64 52-116 116-116s116 52 116 116c0 89-116 220-116 220S0 184 0 95z" fill="#17b7d4" opacity=".92"/>
+    <circle cx="116" cy="95" r="48" fill="#0f172a"/>
+    <circle cx="116" cy="95" r="24" fill="#fde725"/>
+  </g>
+  <rect x="500" y="412" width="300" height="24" rx="12" fill="url(#vir)"/>
+  <text x="500" y="388" fill="#e2e8f0" font-family="Arial" font-size="34" font-weight="700">AMUKISENSE</text>
+</svg>
