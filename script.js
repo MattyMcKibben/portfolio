@@ -7,8 +7,6 @@ const contactForm = document.getElementById('contact-form');
 const dialog = document.getElementById('project-dialog');
 const dialogContent = document.getElementById('dialog-content');
 const dialogClose = document.getElementById('dialog-close');
-const hero = document.getElementById('inicio');
-const networkCanvas = document.getElementById('hero-network');
 
 const savedTheme = localStorage.getItem('portfolio-theme');
 if (savedTheme === 'light' || savedTheme === 'dark') root.dataset.theme = savedTheme;
@@ -33,8 +31,11 @@ document.querySelectorAll('.nav a').forEach((link) => {
 
 if (year) year.textContent = new Date().getFullYear();
 
-if (hero && networkCanvas) {
-  const context = networkCanvas.getContext('2d');
+document.querySelectorAll('.network-section').forEach((section) => {
+  const networkCanvas = section.querySelector('.network-canvas');
+  const context = networkCanvas?.getContext('2d');
+  if (!networkCanvas || !context) return;
+
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let nodes = [];
   let width = 0;
@@ -42,7 +43,7 @@ if (hero && networkCanvas) {
   let frameId = 0;
 
   const makeNodes = () => {
-    const count = Math.max(22, Math.min(48, Math.round(width / 28)));
+    const count = Math.max(22, Math.min(64, Math.round((width * height) / 14000)));
     nodes = Array.from({ length: count }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
@@ -106,7 +107,7 @@ if (hero && networkCanvas) {
   };
 
   const resizeNetwork = () => {
-    const bounds = hero.getBoundingClientRect();
+    const bounds = section.getBoundingClientRect();
     const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
     width = Math.max(1, Math.round(bounds.width));
     height = Math.max(1, Math.round(bounds.height));
@@ -118,10 +119,10 @@ if (hero && networkCanvas) {
   };
 
   const resizeObserver = new ResizeObserver(resizeNetwork);
-  resizeObserver.observe(hero);
+  resizeObserver.observe(section);
   reduceMotion.addEventListener('change', updateAnimation);
   document.addEventListener('visibilitychange', updateAnimation);
-}
+});
 
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
